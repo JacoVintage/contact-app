@@ -5,10 +5,10 @@ declare(strict_types=1);
 const APP_DEBUG = true;
 
 // Force TCP (avoids socket confusion)
-const DB_HOST = '127.0.0.1';
+const DB_HOST = 'db';
 const DB_PORT = 3306;
 const DB_NAME = 'contact_app';
-const DB_USER = 'root';
+const DB_USER = 'contact_user';
 const DB_PASS = 'wcu01';
 const DB_CHARSET = 'utf8mb4';
 

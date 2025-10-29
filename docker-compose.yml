@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  php:
+    build: .
+    container_name: contact-php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./public:/var/www/html
+      - ./app:/var/www/app
+    depends_on:
+      db:
+        condition: service_healthy      # wait until MySQL is ready
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: contact-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: contact_app
+      MYSQL_ROOT_HOST: "%"              # allow connections from PHP container
+    ports:
+      - "3307:3306"                     # change host port if 3306 is busy
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+volumes:
+  db_data:
