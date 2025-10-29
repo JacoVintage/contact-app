@@ -9,7 +9,7 @@ const DB_HOST = 'db';
 const DB_PORT = 3306;
 const DB_NAME = 'contact_app';
 const DB_USER = 'contact_user';
-const DB_PASS = 'wcu01';
+const DB_PASS = 'contact_pass';
 const DB_CHARSET = 'utf8mb4';
 
 // Session
