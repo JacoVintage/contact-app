@@ -1,0 +1,15 @@
+# .gitignore
+# Local environment
+/vendor/
+.env
+*.log
+.idea/
+.DS_Store
+
+# local DB data
+/opt/
+/usr/local/var/mysql/
+/tmp/
+
+# ignore macOS / system files
+*.DS_Store
