@@ -4,8 +4,8 @@ declare(strict_types=1);
 require __DIR__ . '/../app/config.php';
 require __DIR__ . '/../app/common.php';
 
-$errors = flash_get('errors', []);
-$old = flash_get('old', ['name'=>'','email'=>'','phone'=>'','message'=>'']);
+$errors  = flash_get('errors', []);
+$old     = flash_get('old', ['name'=>'','email'=>'','phone'=>'','message'=>'']);
 $success = flash_get('success');
 ?>
 <!doctype html>
@@ -15,30 +15,26 @@ $success = flash_get('success');
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contact Form</title>
 
-  <!-- Tailwind (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          container: { center: true, padding: '1rem' }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="/assets/css/output.css">
 </head>
-<body class="bg-gray-50 text-gray-900">
-  <main class="container max-w-2xl py-8">
-    <h1 class="text-2xl font-semibold mb-4">Contact Us</h1>
+<body>
+
+  <?php include __DIR__ . '/../app/header.php'; ?>
+
+  <main class="main">
+    <div class="container">
+    <h1 class="heading-primary">Contact Us</h1>
 
     <?php if ($success): ?>
-      <div class="mb-4 rounded border border-green-200 bg-green-50 p-4 text-green-800"><?= htmlspecialchars($success, ENT_QUOTES) ?></div>
+      <div class="alert-success">
+        <?= htmlspecialchars($success, ENT_QUOTES) ?>
+      </div>
     <?php endif; ?>
+
     <?php if (!empty($errors)): ?>
-      <div class="mb-4 rounded border border-red-200 bg-red-50 p-4 text-red-800">
-        <p class="font-medium mb-2">Please fix the following:</p>
-        <ul class="list-disc pl-5 space-y-1">
+      <div class="alert-error">
+        <p class="form__error-heading">Please fix the following:</p>
+        <ul class="form__error-list">
           <?php foreach ($errors as $err): ?>
             <li><?= htmlspecialchars($err, ENT_QUOTES) ?></li>
           <?php endforeach; ?>
@@ -46,43 +42,44 @@ $success = flash_get('success');
       </div>
     <?php endif; ?>
 
-    <!-- form shell -->
-    <form action="/handle.php" method="post" class="space-y-4" novalidate>
+    <form action="/handle.php" method="post" class="form" novalidate>
       <input type="hidden" name="csrf" value="<?= htmlspecialchars(csrf_token(), ENT_QUOTES) ?>">
-      <!-- Honeypot -->
       <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off">
 
-      <div>
-        <label class="block text-sm font-medium mb-1" for="name">Name *</label>
-        <input id="name" name="name" type="text" value="<?= htmlspecialchars($old['name'], ENT_QUOTES) ?>"
-               class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200" maxlength="120">
+      <div class="form__group">
+        <label for="name" class="label">Name *</label>
+        <input id="name" name="name" type="text" maxlength="120"
+               value="<?= htmlspecialchars($old['name'], ENT_QUOTES) ?>"
+               class="input">
       </div>
 
-      <div>
-        <label class="block text-sm font-medium mb-1" for="email">Email *</label>
-        <input id="email" name="email" type="email" value="<?= htmlspecialchars($old['email'], ENT_QUOTES) ?>"
-               class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
+      <div class="form__group">
+        <label for="email" class="label">Email *</label>
+        <input id="email" name="email" type="email"
+               value="<?= htmlspecialchars($old['email'], ENT_QUOTES) ?>"
+               class="input">
       </div>
 
-      <div>
-        <label class="block text-sm font-medium mb-1" for="phone">Phone (SA) *</label>
-        <input id="phone" name="phone" type="tel" value="<?= htmlspecialchars($old['phone'], ENT_QUOTES) ?>"
+      <div class="form__group">
+        <label for="phone" class="label">Phone (SA) *</label>
+        <input id="phone" name="phone" type="tel"
+               value="<?= htmlspecialchars($old['phone'], ENT_QUOTES) ?>"
                placeholder="0821234567 or +27821234567"
-               class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200">
-        <p class="text-xs text-gray-500 mt-1">Format: 0XXXXXXXXX or +27XXXXXXXXX</p>
+               class="input">
+        <p class="help">Format: 0XXXXXXXXX or +27XXXXXXXXX</p>
       </div>
 
-      <div>
-        <label class="block text-sm font-medium mb-1" for="message">Message *</label>
-        <textarea id="message" name="message" rows="6"
-                  class="w-full rounded border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"><?= htmlspecialchars($old['message'], ENT_QUOTES) ?></textarea>
+      <div class="form__group">
+        <label for="message" class="label">Message *</label>
+        <textarea id="message" name="message" rows="6" class="textarea"><?= htmlspecialchars($old['message'], ENT_QUOTES) ?></textarea>
       </div>
 
-      <button type="submit"
-              class="inline-flex items-center rounded bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
-        Submit
-      </button>
+      <button type="submit" class="btn-primary">Submit</button>
     </form>
+          </div>
   </main>
+
+  <?php include __DIR__ . '/../app/footer.php'; ?>
+
 </body>
 </html>
